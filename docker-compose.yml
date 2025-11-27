@@ -1,6 +1,6 @@
 services:
   node:
-    image: pasarguard/node:latest
+    image: toonbr1me/node:latest
     # for situations, you don't have access to docker hub use 👇
     # image: ghcr.io/pasarguard/node:latest
     restart: always
