@@ -13,8 +13,17 @@
 # Output of the go coverage tool, specifically when used with LiteIDE
 *.out
 *.idea
-./certs
-./generated
+
+# Local artifacts
+certs/
+generated/
+pasarguard-node
+.venv/
+venv/
+*.log
+
+# Editor settings
+.vscode/
 
 # Dependency directories (remove the comment below to include it)
 # vendor/

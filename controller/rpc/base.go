@@ -7,6 +7,7 @@ import (
 	"net"
 
 	"github.com/pasarguard/node/backend"
+	"github.com/pasarguard/node/backend/singbox"
 	"github.com/pasarguard/node/backend/xray"
 	"github.com/pasarguard/node/common"
 	"google.golang.org/grpc/peer"
@@ -55,13 +56,20 @@ func (s *Service) Stop(_ context.Context, _ *common.Empty) (*common.Empty, error
 }
 
 func (s *Service) detectBackend(ctx context.Context, detail *common.Backend) (context.Context, error) {
-	if detail.GetType() == common.BackendType_XRAY {
+	switch detail.GetType() {
+	case common.BackendType_XRAY:
 		config, err := xray.NewXRayConfig(detail.GetConfig(), detail.GetExcludeInbounds())
 		if err != nil {
 			return nil, err
 		}
 		ctx = context.WithValue(ctx, backend.ConfigKey{}, config)
-	} else {
+	case common.BackendType_SING_BOX:
+		config, err := singbox.NewSingBoxConfig(detail.GetConfig(), detail.GetExcludeInbounds())
+		if err != nil {
+			return nil, err
+		}
+		ctx = context.WithValue(ctx, backend.ConfigKey{}, config)
+	default:
 		return nil, errors.New("unknown backend type")
 	}
 

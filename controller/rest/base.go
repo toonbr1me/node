@@ -8,6 +8,7 @@ import (
 	"net/http"
 
 	"github.com/pasarguard/node/backend"
+	"github.com/pasarguard/node/backend/singbox"
 	"github.com/pasarguard/node/backend/xray"
 	"github.com/pasarguard/node/common"
 )
@@ -58,13 +59,20 @@ func (s *Service) detectBackend(r *http.Request) (context.Context, common.Backen
 		return nil, 0, 0, err
 	}
 
-	if data.Type == common.BackendType_XRAY {
+	switch data.Type {
+	case common.BackendType_XRAY:
 		config, err := xray.NewXRayConfig(data.GetConfig(), data.GetExcludeInbounds())
 		if err != nil {
 			return nil, 0, 0, err
 		}
 		ctx = context.WithValue(r.Context(), backend.ConfigKey{}, config)
-	} else {
+	case common.BackendType_SING_BOX:
+		config, err := singbox.NewSingBoxConfig(data.GetConfig(), data.GetExcludeInbounds())
+		if err != nil {
+			return nil, 0, 0, err
+		}
+		ctx = context.WithValue(r.Context(), backend.ConfigKey{}, config)
+	default:
 		return ctx, data.GetType(), data.GetKeepAlive(), errors.New("invalid backend type")
 	}
 

@@ -15,6 +15,7 @@ message BaseInfoResponse {
 
 enum BackendType {
   XRAY = 0;
+  SING_BOX = 1;
 }
 
 message Backend {

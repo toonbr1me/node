@@ -10,6 +10,7 @@ import (
 	"github.com/google/uuid"
 
 	"github.com/pasarguard/node/backend"
+	"github.com/pasarguard/node/backend/singbox"
 	"github.com/pasarguard/node/backend/xray"
 	"github.com/pasarguard/node/common"
 	"github.com/pasarguard/node/config"
@@ -102,6 +103,12 @@ func (c *Controller) StartBackend(ctx context.Context, backendType common.Backen
 	switch backendType {
 	case common.BackendType_XRAY:
 		newBackend, err := xray.NewXray(ctx, c.apiPort, c.cfg)
+		if err != nil {
+			return err
+		}
+		c.backend = newBackend
+	case common.BackendType_SING_BOX:
+		newBackend, err := singbox.NewSingBox(ctx, c.apiPort, c.cfg)
 		if err != nil {
 			return err
 		}

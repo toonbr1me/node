@@ -7,11 +7,12 @@
 package common
 
 import (
-	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
-	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
+
+	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
+	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 )
 
 const (
@@ -24,16 +25,19 @@ const (
 type BackendType int32
 
 const (
-	BackendType_XRAY BackendType = 0
+	BackendType_XRAY     BackendType = 0
+	BackendType_SING_BOX BackendType = 1
 )
 
 // Enum value maps for BackendType.
 var (
 	BackendType_name = map[int32]string{
 		0: "XRAY",
+		1: "SING_BOX",
 	}
 	BackendType_value = map[string]int32{
-		"XRAY": 0,
+		"XRAY":     0,
+		"SING_BOX": 1,
 	}
 )
 

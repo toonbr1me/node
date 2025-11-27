@@ -11,17 +11,19 @@ import (
 )
 
 type Config struct {
-	ServicePort         int
-	NodeHost            string
-	XrayExecutablePath  string
-	XrayAssetsPath      string
-	SslCertFile         string
-	SslKeyFile          string
-	ApiKey              uuid.UUID
-	ServiceProtocol     string
-	Debug               bool
-	GeneratedConfigPath string
-	LogBufferSize       int
+	ServicePort           int
+	NodeHost              string
+	XrayExecutablePath    string
+	XrayAssetsPath        string
+	SingBoxExecutablePath string
+	SingBoxAssetsPath     string
+	SslCertFile           string
+	SslKeyFile            string
+	ApiKey                uuid.UUID
+	ServiceProtocol       string
+	Debug                 bool
+	GeneratedConfigPath   string
+	LogBufferSize         int
 }
 
 func Load() (*Config, error) {
@@ -31,15 +33,17 @@ func Load() (*Config, error) {
 	}
 
 	cfg := &Config{
-		ServicePort:         GetEnvAsInt("SERVICE_PORT", 62050),
-		XrayExecutablePath:  GetEnv("XRAY_EXECUTABLE_PATH", "/usr/local/bin/xray"),
-		XrayAssetsPath:      GetEnv("XRAY_ASSETS_PATH", "/usr/local/share/xray"),
-		SslCertFile:         GetEnv("SSL_CERT_FILE", "/var/lib/pg-node/certs/ssl_cert.pem"),
-		SslKeyFile:          GetEnv("SSL_KEY_FILE", "/var/lib/pg-node/certs/ssl_key.pem"),
-		GeneratedConfigPath: GetEnv("GENERATED_CONFIG_PATH", "/var/lib/pg-node/generated/"),
-		ServiceProtocol:     GetEnv("SERVICE_PROTOCOL", "grpc"),
-		Debug:               GetEnvAsBool("DEBUG", false),
-		LogBufferSize:       GetEnvAsInt("LOG_BUFFER_SIZE", 1000),
+		ServicePort:           GetEnvAsInt("SERVICE_PORT", 62050),
+		XrayExecutablePath:    GetEnv("XRAY_EXECUTABLE_PATH", "/usr/local/bin/xray"),
+		XrayAssetsPath:        GetEnv("XRAY_ASSETS_PATH", "/usr/local/share/xray"),
+		SingBoxExecutablePath: GetEnv("SINGBOX_EXECUTABLE_PATH", "/usr/local/bin/sing-box"),
+		SingBoxAssetsPath:     GetEnv("SINGBOX_ASSETS_PATH", "/usr/local/share/sing-box"),
+		SslCertFile:           GetEnv("SSL_CERT_FILE", "/var/lib/pg-node/certs/ssl_cert.pem"),
+		SslKeyFile:            GetEnv("SSL_KEY_FILE", "/var/lib/pg-node/certs/ssl_key.pem"),
+		GeneratedConfigPath:   GetEnv("GENERATED_CONFIG_PATH", "/var/lib/pg-node/generated/"),
+		ServiceProtocol:       GetEnv("SERVICE_PROTOCOL", "grpc"),
+		Debug:                 GetEnvAsBool("DEBUG", false),
+		LogBufferSize:         GetEnvAsInt("LOG_BUFFER_SIZE", 1000),
 	}
 
 	cfg.ApiKey, err = GetEnvAsUUID("API_KEY")
